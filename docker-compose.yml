@@ -1,0 +1,15 @@
+teamcity:
+  build: teamcity-server
+  restart: always
+  ports:
+    - "8111:8111"
+  volumes:
+    - ./teamcity-server/storage:/root/BuildServer
+
+#teamcityagent:
+#  build: teamcity-agent
+#  restart: always
+#  links:
+#  - teamcity
+#  - mysql
+
