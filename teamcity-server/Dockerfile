@@ -5,7 +5,8 @@ RUN apt-get update && \
 	apt-get install -y wget tar
 
 RUN wget -v https://download.jetbrains.com/teamcity/TeamCity-2017.1.3.tar.gz && \
-    tar -xzvf TeamCity-2017.1.3.tar.gz
+    tar -xzvf TeamCity-2017.1.3.tar.gz && \
+    rm -f TeamCity-2017.1.3.tar.gz
 
 EXPOSE 8111 9090
 
