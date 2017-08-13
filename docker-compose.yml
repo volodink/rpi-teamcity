@@ -14,12 +14,22 @@ services:
   teamcity-agent:
     build: teamcity-agent
     image: volodink/teamcity-agent:latest
-    restart: always
+    restart: unless-stopped
     links:
-      - teamcity-server
+      - "teamcity-server:teamcity-server"
     environment:
       SERVER_URL: "teamcity-server:8111"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     depends_on:
       - teamcity-server
+   
+  ui:
+    image: portainer/portainer
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    expose:
+      - 9000
+    ports:
+      - 9000:9000
