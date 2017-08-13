@@ -14,7 +14,6 @@ services:
   teamcity-agent:
     build: teamcity-agent
     image: volodink/teamcity-agent:latest
-    container_name: teamcity-agent
     restart: always
     links:
       - teamcity-server
