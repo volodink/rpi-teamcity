@@ -1,15 +1,26 @@
-teamcity:
-  build: teamcity-server
-  restart: always
-  ports:
-    - "8111:8111"
-  volumes:
-    - ./teamcity-server/storage:/root/BuildServer
+version: "3"
 
-#teamcityagent:
-#  build: teamcity-agent
-#  restart: always
-#  links:
-#  - teamcity
-#  - mysql
+services:
+  teamcity-server:
+    build: teamcity-server
+    image: volodink/teamcity-server:latest
+    container_name: teamcity-server
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8111:8111"
+    volumes:
+      - ./teamcity-server/storage:/root/BuildServer
 
+  teamcity-agent:
+    build: teamcity-agent
+    image: volodink/teamcity-agent:latest
+    container_name: teamcity-agent
+    restart: always
+    links:
+      - teamcity-server
+    environment:
+      SERVER_URL: "teamcity-server:8111"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    depends_on:
+      - teamcity-server
