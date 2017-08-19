@@ -1,4 +1,9 @@
 /teamcity-server/storage/*
+/teamcity-server/TeamCity/*
+/teamcity-agent/TeamCity/*
+/teamcity-server/*
+/portainer-data/data/*
+/portainer-data/portainer.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

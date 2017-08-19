@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  teamcity-server:
+    build: teamcity-server
+    image: localhost:5000/rpi-teamcity-server:latest
+    container_name: teamcity-server
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8111:8111"
+    volumes:
+      - ./teamcity-server/storage:/root/BuildServer
+
+  teamcity-agent:
+    build: teamcity-agent
+    image: localhost:5000/rpi-teamcity-agent:latest
+    restart: unless-stopped
+    links:
+      - "teamcity-server:teamcity-server"
+    environment:
+      SERVER_URL: "teamcity-server:8111"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    depends_on:
+      - teamcity-server
+   
+  ui:
+    image: portainer/portainer:arm
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    expose:
+      - 9000
+    ports:
+      - 9000:9000
+
+  registry:
+    image: codrake/rpi-registry
+    container_name: teamcity-registry
+    restart: always
+    ports:
+      - "0.0.0.0:5000:5000"
+    volumes:
+      - ./registry/registry-data:/var/lib/registry
+    
